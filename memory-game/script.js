@@ -83,7 +83,7 @@ function finishShowScore(score) {
 
 let preFaceUpCard;
 let guessCount = 0;
-let matchedCard = 5;
+let nonMatchedCard = 5;
 
 // TODO: Implement this function!
 function handleCardClick(event) {
@@ -95,12 +95,12 @@ function handleCardClick(event) {
       resetBackgroundColor(event.target);
       resetBackgroundColor(preFaceUpCard);
     } else {
-      matchedCard--;
-      if (matchedCard === 0) {
+      nonMatchedCard--;
+      if (nonMatchedCard === 0) {
         finishShowScore(guessCount);
       }
     }
-    preFaceUpCard = false;
+    preFaceUpCard = null;
   } else {
     preFaceUpCard = event.target;
   }
@@ -112,5 +112,8 @@ createDivsForColors(shuffledColors);
 
 gameRestart.addEventListener("click", function (e) {
   gameContainer.innerHTML = "";
+  preFaceUpCard = null;
+  guessCount = 0;
+  nonMatchedCard = 5;
   createDivsForColors(shuffledColors);
 });
