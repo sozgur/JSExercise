@@ -7,6 +7,7 @@ let preCard = null;
 let guessCount = 0;
 let nonMatchedCard = cards.length / 2;
 let bestGuessScore = parseInt(localStorage.getItem("lowestScore")) || Infinity;
+let inactive;
 
 //If there is best guess score show top of the page
 if (bestGuessScore == Infinity) {
@@ -67,7 +68,7 @@ function finishGame(score) {
 }
 
 function handleCardClick(event) {
-  if (event.target.parentElement.className !== "flip-card-front") {
+  if (event.target.parentElement.className !== "flip-card-front" || inactive) {
     return;
   }
 
@@ -88,10 +89,12 @@ function handleCardClick(event) {
       }
       preCard = null;
     } else {
+      inactive = true;
       setTimeout(function () {
         preCard.classList.remove("flipped");
         currentCard.classList.remove("flipped");
         preCard = null;
+        inactive = false;
       }, 700);
     }
   } else {
