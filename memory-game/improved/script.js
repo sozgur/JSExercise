@@ -1,10 +1,21 @@
-// const gameRestart = document.getElementById("restart");
+const finalScore = document.getElementById("final-score");
 const innerCards = document.querySelectorAll(".flip-card-inner");
 const cards = document.querySelectorAll(".flip-card");
+const bestGuess = document.getElementById("best-score");
+const currentGuess = document.getElementById("current-score");
 let preCard = null;
 let guessCount = 0;
 let nonMatchedCard = cards.length / 2;
-let pairImages;
+let bestGuessScore = parseInt(localStorage.getItem("lowestScore")) || Infinity;
+
+//If there is best guess score show top of the page
+if (bestGuessScore == Infinity) {
+  bestGuess.parentElement.innerText = "";
+} else {
+  bestGuess.innerText = bestGuessScore;
+}
+
+currentGuess.innerText = guessCount;
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -29,15 +40,14 @@ function shuffle(array) {
   return array;
 }
 
-// console.dir(innerCards[0].children[1].children[0]);
-
+//
 function startGame() {
   // create Pair Images List
   let indices = [];
-  for (let i = 1; i <= nonMatchedCard; i++) {
+  for (let i = 1; i <= innerCards.length / 2; i++) {
     indices.push(i.toString());
   }
-  pairImages = shuffle(indices.concat(indices));
+  let pairImages = shuffle(indices.concat(indices));
 
   for (let i = 0; i < innerCards.length; i++) {
     let path = "images/" + pairImages[i] + ".jpeg";
@@ -47,19 +57,13 @@ function startGame() {
 
 startGame();
 
-let bestScore = parseInt(localStorage.getItem("lowestScore")) || 0;
-
 function finishGame(score) {
-  if (score < bestScore) {
-    console.log("update best score");
+  finalScore.innerText = "Your score: " + score;
+  if (score < bestGuessScore) {
+    finalScore.innerText += " - New Best Score!";
     localStorage.setItem("lowestScore", score);
-  } else {
-    console.log("show score");
   }
-}
-
-for (let i = 0; i < cards.length; i++) {
-  cards[i].addEventListener("click", handleCardClick);
+  document.getElementById("end").classList.add("game-over");
 }
 
 function handleCardClick(event) {
@@ -70,6 +74,7 @@ function handleCardClick(event) {
   let currentCard = event.target.parentElement.parentElement;
   currentCard.classList.add("flipped");
   guessCount++;
+  currentGuess.innerText = guessCount;
 
   if (preCard) {
     preCardSrc = preCard.children[1].children[0].src;
@@ -92,4 +97,8 @@ function handleCardClick(event) {
   } else {
     preCard = currentCard;
   }
+}
+
+for (let i = 0; i < cards.length; i++) {
+  cards[i].addEventListener("click", handleCardClick);
 }
