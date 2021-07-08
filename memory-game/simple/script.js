@@ -62,7 +62,6 @@ function createDivsForColors(colorArray) {
 
 function resetBackgroundColor(element) {
   setTimeout(function () {
-    console.log("Hiii");
     element.style.backgroundColor = "";
   }, 300);
 }
