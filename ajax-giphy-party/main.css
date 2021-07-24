@@ -1,0 +1,12 @@
+.giphy-container {
+    display: grid;
+    padding-top: 20px;
+    line-height: normal;
+    column-gap: 20px;
+    align-items: center;
+    grid-template-columns: 50% 50%;
+}
+
+.giphy {
+    padding-top: 20px;
+}
